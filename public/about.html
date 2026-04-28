@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — Habit Tracker</title>
+  <meta name="description" content="Learn about the Habit Tracker app — built to help you build lasting habits." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-icon">✓</div>
+    Habit Tracker
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+    <li id="navAuth"><div class="nav-divider"></div></li>
+  </ul>
+</nav>
+
+<div class="container">
+  <div class="page-hero">
+    <h1>About Habit Tracker</h1>
+    <p>We believe small, consistent actions lead to extraordinary results. Our app makes it simple to build the habits that matter most to you.</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🎯</div>
+      <div class="feature-title">Focused Tracking</div>
+      <div class="feature-desc">Track exactly what you want, nothing more. Clean and distraction-free.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔥</div>
+      <div class="feature-title">Streak System</div>
+      <div class="feature-desc">Build momentum with consecutive day streaks that keep you coming back.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title">Smart Analytics</div>
+      <div class="feature-desc">30-day heatmaps and completion rates help you see your real progress.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔔</div>
+      <div class="feature-title">Reminders</div>
+      <div class="feature-desc">Browser notifications remind you to stay on track every single day.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <div class="feature-title">Secure & Private</div>
+      <div class="feature-desc">JWT auth and bcrypt hashing keep your data safe and private.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">☁️</div>
+      <div class="feature-title">Cloud Synced</div>
+      <div class="feature-desc">Your habits are stored securely in the cloud, accessible anywhere.</div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:2rem;text-align:center;padding:2.5rem;">
+    <h2 style="margin-bottom:0.75rem;">Ready to build better habits?</h2>
+    <p style="color:var(--text-secondary);margin-bottom:1.5rem;">Join thousands of people building lasting habits every day.</p>
+    <a href="register.html" class="btn btn-primary" style="font-size:1rem;padding:12px 32px;">Get Started Free</a>
+  </div>
+</div>
+
+<script>
+  const token = localStorage.getItem('habitToken');
+  const navAuth = document.getElementById('navAuth');
+  if (token) {
+    navAuth.innerHTML = '<div class="nav-divider"></div></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="#" onclick="localStorage.clear();window.location.href=\'login.html\'" class="btn-nav-logout">Logout</a>';
+  } else {
+    navAuth.innerHTML = '<div class="nav-divider"></div></li><li><a href="login.html">Login</a>';
+  }
+</script>
+</body>
+</html>

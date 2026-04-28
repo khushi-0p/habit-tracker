@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us — Habit Tracker</title>
+  <meta name="description" content="Get in touch with the Habit Tracker team." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-icon">✓</div>
+    Habit Tracker
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+    <li id="navAuth"><div class="nav-divider"></div></li>
+  </ul>
+</nav>
+
+<div class="container">
+  <div class="page-hero">
+    <h1>Contact Us</h1>
+    <p>Have a question, suggestion, or just want to say hello? We'd love to hear from you.</p>
+  </div>
+
+  <div class="contact-form">
+    <div class="alert alert-error" id="alertBox"></div>
+    <div class="alert alert-success" id="successBox"></div>
+
+    <div class="card">
+      <form id="contactForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="contactName">Your Name</label>
+          <input class="form-input" type="text" id="contactName" placeholder="Jane Doe" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="contactEmail">Email Address</label>
+          <input class="form-input" type="email" id="contactEmail" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="contactSubject">Subject</label>
+          <input class="form-input" type="text" id="contactSubject" placeholder="How can we help?" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="contactMessage">Message</label>
+          <textarea
+            class="form-input"
+            id="contactMessage"
+            rows="5"
+            placeholder="Tell us what's on your mind…"
+            required
+            style="resize:vertical;min-height:120px;"
+          ></textarea>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit" id="contactBtn">Send Message</button>
+      </form>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.25rem;">
+      <div class="card" style="text-align:center;">
+        <div style="font-size:1.5rem;margin-bottom:8px;">📧</div>
+        <div style="font-size:0.85rem;font-weight:600;margin-bottom:4px;">Email</div>
+        <div style="font-size:0.8rem;color:var(--text-secondary);">support@habittracker.app</div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div style="font-size:1.5rem;margin-bottom:8px;">🐙</div>
+        <div style="font-size:0.85rem;font-weight:600;margin-bottom:4px;">GitHub</div>
+        <div style="font-size:0.8rem;color:var(--text-secondary);">github.com/habit-tracker</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+<script>
+  const token = localStorage.getItem('habitToken');
+  const navAuth = document.getElementById('navAuth');
+  if (token) {
+    navAuth.innerHTML = '<div class="nav-divider"></div></li><li><a href="dashboard.html">Dashboard</a></li><li><a href="#" onclick="localStorage.clear();window.location.href=\'login.html\'" class="btn-nav-logout">Logout</a>';
+  } else {
+    navAuth.innerHTML = '<div class="nav-divider"></div></li><li><a href="login.html">Login</a>';
+  }
+
+  document.getElementById('contactForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('contactName').value.trim();
+    const email = document.getElementById('contactEmail').value.trim();
+    const subject = document.getElementById('contactSubject').value.trim();
+    const message = document.getElementById('contactMessage').value.trim();
+    const alertEl = document.getElementById('alertBox');
+    const successEl = document.getElementById('successBox');
+    alertEl.className = 'alert alert-error';
+    successEl.className = 'alert alert-success';
+
+    if (!name || !email || !subject || !message) {
+      alertEl.textContent = 'Please fill in all fields.';
+      alertEl.classList.add('show');
+      return;
+    }
+
+    // Simulate sending
+    successEl.textContent = `Thanks ${name}! Your message has been received. We'll reply to ${email} soon.`;
+    successEl.classList.add('show');
+    document.getElementById('contactForm').reset();
+    showToast('Message sent successfully!', 'success');
+  });
+</script>
+</body>
+</html>

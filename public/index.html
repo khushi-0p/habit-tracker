@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Habit Tracker — Build Better Habits</title>
+  <meta name="description" content="Smart Habit Tracker with streaks, analytics, and reminders. Build consistency, one day at a time." />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .landing-hero {
+      min-height: calc(100vh - 64px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .landing-content h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      background: linear-gradient(135deg, #fff 30%, var(--purple-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+    .landing-content p {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+    }
+    .landing-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .landing-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 4rem;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-icon">✓</div>
+    Habit Tracker
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+    <li><div class="nav-divider"></div></li>
+    <li id="navAuthLinks"><a href="login.html">Login</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+  <div class="landing-hero">
+    <div class="landing-content">
+      <h1>Build Better Habits,<br />One Day at a Time</h1>
+      <p>Track your daily habits, maintain streaks, and visualize your progress with our smart analytics dashboard.</p>
+      <div class="landing-ctas">
+        <a href="register.html" class="btn btn-primary" style="font-size:1rem;padding:12px 28px;">Get Started Free</a>
+        <a href="login.html" class="btn btn-outline" style="font-size:1rem;padding:12px 28px;">Sign In</a>
+      </div>
+      <div class="landing-features">
+        <div class="feature-card">
+          <div class="feature-icon">🔥</div>
+          <div class="feature-title">Streak Tracking</div>
+          <div class="feature-desc">Stay motivated with consecutive day streaks</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <div class="feature-title">Analytics</div>
+          <div class="feature-desc">30-day completion rate heatmaps</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <div class="feature-title">Secure Auth</div>
+          <div class="feature-desc">JWT-based authentication & bcrypt hashing</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-title">Fast & Simple</div>
+          <div class="feature-desc">Clean, distraction-free interface</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // If already logged in, redirect to dashboard
+  if (localStorage.getItem('habitToken')) {
+    const navAuth = document.getElementById('navAuthLinks');
+    navAuth.innerHTML = '<a href="dashboard.html">Dashboard</a>';
+  }
+</script>
+</body>
+</html>

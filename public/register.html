@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register — Habit Tracker</title>
+  <meta name="description" content="Create your Habit Tracker account and start building better habits today." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-icon">✓</div>
+    Habit Tracker
+  </a>
+  <ul class="nav-links">
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+  </ul>
+</nav>
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">✓</div>
+      Habit Tracker
+    </div>
+    <h1 class="auth-heading">Create account</h1>
+    <p class="auth-sub">Start your habit journey today</p>
+
+    <div class="alert alert-error" id="alertBox"></div>
+    <div class="alert alert-success" id="successBox"></div>
+
+    <form id="registerForm" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="regName">Full Name</label>
+        <input class="form-input" type="text" id="regName" placeholder="Jane Doe" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="regEmail">Email Address</label>
+        <input class="form-input" type="email" id="regEmail" placeholder="you@example.com" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="regPassword">Password <span style="color:var(--text-muted);font-weight:400">(min 6 chars)</span></label>
+        <input class="form-input" type="password" id="regPassword" placeholder="••••••••" required />
+      </div>
+      <button class="btn btn-primary btn-block" type="submit" id="registerBtn">Create Account</button>
+    </form>
+
+    <div class="form-footer">
+      Already have an account? <a href="login.html">Sign in</a>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+  if (localStorage.getItem('habitToken')) window.location.href = 'dashboard.html';
+
+  document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('registerBtn');
+    const alertEl = document.getElementById('alertBox');
+    const successEl = document.getElementById('successBox');
+    alertEl.className = 'alert alert-error';
+    successEl.className = 'alert alert-success';
+
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value;
+
+    if (!name || !email || !password) {
+      alertEl.textContent = 'Please fill in all fields.';
+      alertEl.classList.add('show');
+      return;
+    }
+    if (password.length < 6) {
+      alertEl.textContent = 'Password must be at least 6 characters.';
+      alertEl.classList.add('show');
+      return;
+    }
+
+    btn.textContent = 'Creating account…';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(`${API_BASE}/api/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Registration failed');
+
+      localStorage.setItem('habitToken', data.token);
+      localStorage.setItem('habitUser', JSON.stringify({ name: data.name, email: data.email }));
+      successEl.textContent = 'Account created! Redirecting…';
+      successEl.classList.add('show');
+      setTimeout(() => window.location.href = 'dashboard.html', 800);
+    } catch (err) {
+      alertEl.textContent = err.message;
+      alertEl.classList.add('show');
+      btn.textContent = 'Create Account';
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

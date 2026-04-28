@@ -26,7 +26,7 @@ app.use(cors({
 app.use(express.json());
 
 // ── Static frontend (local dev only; Vercel routes handle this) ─
-app.use(express.static(path.join(__dirname, '../client')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // ── Health check (to verify the function is alive) ───────────
 app.get('/api/health', (req, res) => {
@@ -71,7 +71,7 @@ app.use('/api/*', (req, res) => {
 
 // ── Catch-all: serve index.html for non-API routes (local dev) ─
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/index.html'));
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 // ── Global error handler (always returns JSON) ────────────────

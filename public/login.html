@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Habit Tracker</title>
+  <meta name="description" content="Sign in to your Habit Tracker account." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-icon">✓</div>
+    Habit Tracker
+  </a>
+  <ul class="nav-links">
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+  </ul>
+</nav>
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">✓</div>
+      Habit Tracker
+    </div>
+    <h1 class="auth-heading">Welcome back</h1>
+    <p class="auth-sub">Sign in to continue your habit journey</p>
+
+    <div class="alert alert-error" id="alertBox"></div>
+    <div class="alert alert-success" id="successBox"></div>
+
+    <form id="loginForm" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="loginEmail">Email Address</label>
+        <input class="form-input" type="email" id="loginEmail" placeholder="you@example.com" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="loginPassword">Password</label>
+        <input class="form-input" type="password" id="loginPassword" placeholder="••••••••" required />
+      </div>
+      <button class="btn btn-primary btn-block" type="submit" id="loginBtn">Sign In</button>
+    </form>
+
+    <div class="form-footer">
+      <a href="forgot.html">Forgot password?</a>
+    </div>
+    <div class="form-footer" style="margin-top:0.5rem;">
+      Don't have an account? <a href="register.html">Register</a>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+  if (localStorage.getItem('habitToken')) window.location.href = 'dashboard.html';
+
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('loginBtn');
+    const alert = document.getElementById('alertBox');
+    const success = document.getElementById('successBox');
+    alert.className = 'alert alert-error';
+    success.className = 'alert alert-success';
+
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    if (!email || !password) {
+      alert.textContent = 'Please fill in all fields.';
+      alert.classList.add('show');
+      return;
+    }
+
+    btn.textContent = 'Signing in…';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(`${API_BASE}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Login failed');
+
+      localStorage.setItem('habitToken', data.token);
+      localStorage.setItem('habitUser', JSON.stringify({ name: data.name, email: data.email }));
+      success.textContent = 'Login successful! Redirecting…';
+      success.classList.add('show');
+      setTimeout(() => window.location.href = 'dashboard.html', 800);
+    } catch (err) {
+      alert.textContent = err.message;
+      alert.classList.add('show');
+      btn.textContent = 'Sign In';
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
