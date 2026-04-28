@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reset Password — Habit Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-icon">✓</div>
+    Habit Tracker
+  </a>
+</nav>
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">✓</div>
+      Habit Tracker
+    </div>
+    <h1 class="auth-heading">New password</h1>
+    <p class="auth-sub">Choose a strong new password</p>
+
+    <div class="alert alert-error" id="alertBox"></div>
+    <div class="alert alert-success" id="successBox"></div>
+
+    <form id="resetForm" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="newPass">New Password</label>
+        <input class="form-input" type="password" id="newPass" placeholder="••••••••" required />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="confirmPass">Confirm Password</label>
+        <input class="form-input" type="password" id="confirmPass" placeholder="••••••••" required />
+      </div>
+      <button class="btn btn-primary btn-block" type="submit" id="resetBtn">Reset Password</button>
+    </form>
+
+    <div class="form-footer">
+      <a href="login.html">← Back to login</a>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+  const token = new URLSearchParams(window.location.search).get('token');
+
+  document.getElementById('resetForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('resetBtn');
+    const alertEl = document.getElementById('alertBox');
+    const successEl = document.getElementById('successBox');
+    alertEl.className = 'alert alert-error';
+    successEl.className = 'alert alert-success';
+
+    const pass = document.getElementById('newPass').value;
+    const confirm = document.getElementById('confirmPass').value;
+
+    if (!pass || pass.length < 6) {
+      alertEl.textContent = 'Password must be at least 6 characters.';
+      alertEl.classList.add('show');
+      return;
+    }
+    if (pass !== confirm) {
+      alertEl.textContent = 'Passwords do not match.';
+      alertEl.classList.add('show');
+      return;
+    }
+    if (!token) {
+      alertEl.textContent = 'Invalid reset link. Please request a new one.';
+      alertEl.classList.add('show');
+      return;
+    }
+
+    btn.textContent = 'Resetting…';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(`${API_BASE}/api/auth/reset/${token}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pass }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Reset failed');
+      successEl.textContent = data.message + ' Redirecting to login…';
+      successEl.classList.add('show');
+      setTimeout(() => window.location.href = 'login.html', 2000);
+    } catch (err) {
+      alertEl.textContent = err.message;
+      alertEl.classList.add('show');
+      btn.textContent = 'Reset Password';
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

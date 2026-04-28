@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Habit Tracker</title>
+  <meta name="description" content="Track your daily habits, view streaks, and build consistency one day at a time." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-brand-icon">✓</div>
+    Habit Tracker
+  </a>
+  <ul class="nav-links">
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact Us</a></li>
+    <li><div class="nav-divider"></div></li>
+    <li><a href="#" class="btn-nav-logout" id="logoutBtn">Logout</a></li>
+  </ul>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+  <!-- Hero Stats Card -->
+  <div class="hero-card">
+    <div class="hero-left">
+      <div class="hero-icon">✓</div>
+      <div>
+        <div class="hero-title">Habit Tracker</div>
+        <div class="hero-sub">Build consistency, one day at a time</div>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-value" id="totalHabits">0</div>
+        <div class="stat-label">Habits</div>
+      </div>
+      <div>
+        <div class="stat-value" id="bestStreak">0</div>
+        <div class="stat-label">Best Streak</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Habit -->
+  <div class="add-habit-card">
+    <input
+      type="text"
+      class="add-habit-input"
+      id="habitInput"
+      placeholder="Add a new habit... (e.g., Coding, Gym, Reading)"
+      maxlength="80"
+      autocomplete="off"
+    />
+    <button class="btn btn-primary" id="addHabitBtn">+ Add Habit</button>
+  </div>
+
+  <!-- Habit List -->
+  <div class="section-header">
+    <span class="section-title">Your Habits</span>
+    <span class="badge" id="habitCount">0</span>
+  </div>
+
+  <div id="habitList">
+    <div class="empty-state">
+      <h3>No habits yet</h3>
+      <p>Start building better habits — add your first one above!</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Stats Modal -->
+<div class="modal-overlay" id="statsModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalHabitName" style="font-size:1.1rem;">Habit Stats</h2>
+      <button class="modal-close" id="closeModal">✕</button>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-value" id="modalStreak">0</div>
+        <div class="stat-label">Streak</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" id="modalRate">0%</div>
+        <div class="stat-label">30-Day Rate</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-value" id="modalTotal">0</div>
+        <div class="stat-label">Total Done</div>
+      </div>
+    </div>
+    <div class="calendar-title">Last 30 Days</div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+<script>
+  // Guard: redirect to login if not authenticated
+  if (!localStorage.getItem('habitToken')) {
+    window.location.href = 'login.html';
+  }
+</script>
+</body>
+</html>
