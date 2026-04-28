@@ -4,9 +4,11 @@
    ============================================================ */
 
 // ── API Base URL (env-aware) ───────────────────────────────
-const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? `http://localhost:${window.API_PORT || 5000}`
-  : '';   // On Vercel: same origin, /api/* routed to serverless
+// On Vercel: same origin (empty string), /api/* routed to serverless
+// Locally: always talk to Express on port 5000
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:5000'
+  : '';
 
 // ── Auth Helper ────────────────────────────────────────────
 function getToken() {
